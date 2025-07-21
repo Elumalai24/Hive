@@ -1,30 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'home_page.dart';
+import 'model/user.dart';
 
-void main(){
+void main()async{
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserAdapter());
+  await Hive.openBox<User>("Users");
   runApp(MaterialApp(home: HomePage()));
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    var box = Hive.box('myBox');
-    box.put("name", "Lotus");
-  }
-  @override
-  Widget build(BuildContext context) {
-    var box = Hive.box('myBox');
-    return Scaffold(appBar: AppBar(),
-    body: Center(child: Text(box.get("name")))
-    );
-  }
-}
